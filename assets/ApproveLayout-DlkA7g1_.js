@@ -1,0 +1,1 @@
+import{A as e,E as t,f as n,h as r,l as i}from"./vue.runtime.esm-bundler-ngPGXZWx.js";var a=(e,t)=>{let n=e.__vccOpts||e;for(let[e,r]of t)n[e]=r;return n},o={},s={class:`flex-1 min-h-screen`},c={class:`max-w-300 mx-auto px-4 py-6`};function l(a,o){let l=e(`router-view`);return t(),n(`main`,s,[i(`div`,c,[r(l)])])}var u=a(o,[[`render`,l]]);export{u as default};
