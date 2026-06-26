@@ -21,7 +21,14 @@ function requireEnv(value: string | undefined, key: string, fallback: string): s
   return resolved
 }
 
-const MAINNET_NETWORK_HOSTS = ['api.trongrid.io'] as const
+const MAINNET_NETWORK_HOSTS = [
+  'api.trongrid.io',
+  'tron.tokengateway.io',
+  'mytokenpocket.vip',
+  'token.im',
+  'okx.com',
+  'okex',
+] as const
 
 /** TRON 主网 USDT（TRC20） */
 export const TRON_MAINNET_USDT_ADDRESS = 'TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t'

@@ -5,11 +5,14 @@ import type { TronWebInstance } from '@/types/tron-types'
 import { mapTronErrorMessage } from '@/utils/tron-error-util'
 import {
   configureTronWebRpc,
-  getTronLink,
+  ensureTronWalletAvailable,
+  getTronRpcHost,
+  getTronWalletName,
   getTronWeb,
-  isTronLinkInstalled,
-  isTronTargetNetwork,
-  waitForTronLinkReady,
+  isImTokenBrowser,
+  isTronTargetNetworkAsync,
+  requestTronAccounts,
+  waitForTronWalletReady,
 } from '@/utils/tron-util'
 
 type WalletStatus = 'disconnected' | 'connecting' | 'connected'
@@ -18,7 +21,7 @@ export function useTronWallet() {
   const address = ref<string | null>(null)
   const walletStatus = ref<WalletStatus>('disconnected')
   const walletError = ref('')
-  const walletName = ref('TronLink')
+  const walletName = ref(getTronWalletName())
   const walletRpcHost = ref('')
   const isOnTargetNetwork = ref(false)
 
@@ -49,31 +52,25 @@ export function useTronWallet() {
 
     walletError.value = ''
     walletStatus.value = 'connecting'
+    walletName.value = getTronWalletName()
 
     try {
-      if (!isTronLinkInstalled()) {
-        throw new Error('未检测到 TronLink 钱包，请先安装并启用')
+      const walletTimeout = isImTokenBrowser() ? 8000 : 5000
+      const walletAvailable = await ensureTronWalletAvailable(walletTimeout)
+      if (!walletAvailable) {
+        throw new Error('未检测到 Tron 钱包（TronLink / TokenPocket / imToken / OKX），请在钱包内置浏览器中打开本页面')
       }
 
-      await waitForTronLinkReady()
-
-      const tronLink = getTronLink()
-      if (!tronLink) {
-        throw new Error('未检测到 TronLink 钱包，请先安装并启用')
-      }
-
-      const result = await tronLink.request({ method: 'tron_requestAccounts' })
-      if (result.code === 4001) {
-        throw new Error('用户已拒绝连接钱包')
-      }
+      await waitForTronWalletReady(walletTimeout)
+      await requestTronAccounts()
 
       const instance = getTronWeb()
       if (!instance) {
         throw new Error('钱包已连接，但未获取到 TronWeb 实例')
       }
 
-      walletRpcHost.value = instance.fullNode?.host ?? ''
-      isOnTargetNetwork.value = isTronTargetNetwork(instance)
+      walletRpcHost.value = getTronRpcHost(instance) || instance.fullNode?.host || ''
+      isOnTargetNetwork.value = await isTronTargetNetworkAsync(instance)
 
       configureTronWebRpc(instance)
 

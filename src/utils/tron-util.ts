@@ -6,18 +6,89 @@ import {
 } from '@/config/tron'
 import type { TronTransactionInfo, TronWebInstance } from '@/types/tron-types'
 
+const TESTNET_HOST_KEYWORDS = ['shasta', 'nile', 'testnet'] as const
+
+export function isImTokenBrowser(): boolean {
+  if (typeof navigator === 'undefined') return false
+  return /imtoken/i.test(navigator.userAgent)
+}
+
+export function isOkxWalletBrowser(): boolean {
+  if (typeof navigator === 'undefined') return false
+  return /okx|okex/i.test(navigator.userAgent) || Boolean(window.okxwallet)
+}
+
+export function getOkxWallet() {
+  if (typeof window === 'undefined') return undefined
+  return window.okxwallet
+}
+
+export function getOkxTronLink() {
+  return getOkxWallet()?.tronLink
+}
+
 export function getTronLink() {
   if (typeof window === 'undefined') return undefined
-  return window.tronLink
+  return getOkxTronLink() ?? window.tronLink
+}
+
+export function getTokenPocket() {
+  if (typeof window === 'undefined') return undefined
+  return window.tokenpocket
+}
+
+export function getInjectedTronWeb(): TronWebInstance | undefined {
+  if (typeof window === 'undefined') return undefined
+  return window.tronWeb ?? window.tronweb
 }
 
 export function getTronWeb(): TronWebInstance | undefined {
+  const okxTronLink = getOkxTronLink()
+  const tokenPocket = getTokenPocket()
   const tronLink = getTronLink()
-  return tronLink?.tronWeb ?? window.tronWeb
+  const tronProvider = window.tron?.tronWeb
+  const injected = getInjectedTronWeb()
+
+  return (
+    okxTronLink?.tronWeb
+    ?? tokenPocket?.tronWeb
+    ?? tronLink?.tronWeb
+    ?? tronProvider
+    ?? injected
+  )
 }
 
-export function isTronLinkInstalled(): boolean {
-  return Boolean(getTronLink() || getTronWeb())
+export function isTronWalletInstalled(): boolean {
+  return Boolean(
+    getOkxTronLink()
+    || getTokenPocket()?.tronWeb
+    || getTokenPocket()?.tron
+    || window.tronLink
+    || window.tron?.tronWeb
+    || getInjectedTronWeb(),
+  )
+}
+
+/** 等待钱包注入（imToken 内置浏览器注入较慢） */
+export async function ensureTronWalletAvailable(timeoutMs = 5000): Promise<boolean> {
+  if (isTronWalletInstalled()) return true
+
+  const startedAt = Date.now()
+  while (Date.now() - startedAt < timeoutMs) {
+    if (isTronWalletInstalled()) return true
+    await new Promise((resolve) => window.setTimeout(resolve, 200))
+  }
+
+  return isTronWalletInstalled()
+}
+
+export function getTronWalletName(): string {
+  if (getOkxTronLink() || isOkxWalletBrowser()) return 'OKX Wallet'
+  if (isImTokenBrowser()) return 'imToken'
+  if (getTokenPocket()?.tronWeb || getTokenPocket()?.tron) return 'TokenPocket'
+  if (window.tronLink || window.tron) return 'TronLink'
+  if (getInjectedTronWeb()) return 'Tron 钱包'
+  return 'Tron 钱包'
 }
 
 /** 开发环境走 Vite 同源代理，避免 TronGrid CORS */
@@ -30,10 +101,65 @@ export function getTronRpcBaseUrl(): string {
   return TRON_FULL_HOST
 }
 
+export function getTronRpcHost(tronWeb?: TronWebInstance): string {
+  const fullHost = tronWeb?.fullNode?.host ?? ''
+  const solidityHost = tronWeb?.solidityNode?.host ?? ''
+  return (fullHost || solidityHost).toLowerCase()
+}
+
+function isShastaTargetNetwork(): boolean {
+  return TRON_NETWORK_HOSTS.some((host) => host.toLowerCase().includes('shasta'))
+}
+
+function isTestnetRpcHost(host: string): boolean {
+  const lowerHost = host.toLowerCase()
+  return TESTNET_HOST_KEYWORDS.some((keyword) => lowerHost.includes(keyword))
+}
+
+/** 同步网络判断（兼容 TokenPocket / imToken 自有主网节点） */
 export function isTronTargetNetwork(tronWeb?: TronWebInstance): boolean {
-  const host = tronWeb?.fullNode?.host ?? ''
-  if (!host) return false
-  return TRON_NETWORK_HOSTS.some((item) => host.includes(item))
+  const host = getTronRpcHost(tronWeb)
+  const shastaTarget = isShastaTargetNetwork()
+
+  if (shastaTarget) {
+    return host.includes('shasta')
+  }
+
+  if (host) {
+    if (isTestnetRpcHost(host)) return false
+    if (TRON_NETWORK_HOSTS.some((item) => host.includes(item.toLowerCase()))) return true
+    return true
+  }
+
+  return Boolean(tronWeb?.defaultAddress?.base58)
+}
+
+export async function isTronTargetNetworkAsync(tronWeb?: TronWebInstance): Promise<boolean> {
+  if (!tronWeb) return false
+
+  const host = getTronRpcHost(tronWeb)
+  if (host) {
+    return isTronTargetNetwork(tronWeb)
+  }
+
+  if (!tronWeb.defaultAddress?.base58) {
+    return false
+  }
+
+  if (isShastaTargetNetwork()) {
+    return false
+  }
+
+  try {
+    if (typeof tronWeb.trx.getBlock === 'function') {
+      await tronWeb.trx.getBlock('latest')
+      return true
+    }
+  } catch {
+    return false
+  }
+
+  return true
 }
 
 /** 将 TronWeb RPC 指向同源代理并附加 TronGrid API Key */
@@ -76,8 +202,26 @@ export function normalizeTronUint(value: unknown): bigint {
   return 0n
 }
 
+/** 等待钱包注入 TronWeb（imToken 等移动端注入较慢） */
+export async function waitForTronWalletReady(timeoutMs = 5000): Promise<boolean> {
+  const startedAt = Date.now()
+
+  while (Date.now() - startedAt < timeoutMs) {
+    const tronWeb = getTronWeb()
+    if (tronWeb?.ready && tronWeb.defaultAddress?.base58) {
+      return true
+    }
+    if (getOkxTronLink()?.ready || getTronLink()?.ready || getTokenPocket()?.tronWeb?.ready) {
+      return true
+    }
+    await new Promise((resolve) => window.setTimeout(resolve, 200))
+  }
+
+  return Boolean(getTronWeb())
+}
+
 export function waitForTronLinkReady(timeoutMs = 3000): Promise<boolean> {
-  if (getTronLink()?.ready || getTronWeb()?.ready) {
+  if (getTronWeb()?.ready || getTronLink()?.ready || getTokenPocket()?.tronWeb?.ready) {
     return Promise.resolve(true)
   }
 
@@ -93,6 +237,66 @@ export function waitForTronLinkReady(timeoutMs = 3000): Promise<boolean> {
       { once: true },
     )
   })
+}
+
+async function requestViaTronProvider(): Promise<boolean> {
+  if (!window.tron?.request) return false
+
+  try {
+    await window.tron.request({ method: 'eth_requestAccounts' })
+    return true
+  } catch {
+    try {
+      await window.tron.request({ method: 'tron_requestAccounts' })
+      return true
+    } catch {
+      return false
+    }
+  }
+}
+
+export async function requestTronAccounts(): Promise<void> {
+  if (await requestViaTronProvider()) {
+    return
+  }
+
+  const okxTronLink = getOkxTronLink()
+  if (okxTronLink?.request) {
+    const result = await okxTronLink.request({ method: 'tron_requestAccounts' })
+    if (result.code === 4001) {
+      throw new Error('用户已拒绝连接钱包')
+    }
+    return
+  }
+
+  const tokenPocket = getTokenPocket()
+  if (tokenPocket?.tron?.request) {
+    await tokenPocket.tron.request({ method: 'tron_requestAccounts' })
+    return
+  }
+
+  const tronLink = window.tronLink
+  if (tronLink?.request) {
+    const result = await tronLink.request({ method: 'tron_requestAccounts' })
+    if (result.code === 4001) {
+      throw new Error('用户已拒绝连接钱包')
+    }
+    return
+  }
+
+  const readyTimeout = isImTokenBrowser() ? 8000 : 5000
+  await waitForTronWalletReady(readyTimeout)
+
+  const tronWeb = getTronWeb()
+  if (tronWeb?.defaultAddress?.base58) {
+    return
+  }
+
+  if (isImTokenBrowser()) {
+    throw new Error('imToken 未解锁或未授权，请在 imToken 内置浏览器中打开本页面')
+  }
+
+  throw new Error('未检测到 Tron 钱包（TronLink / TokenPocket / imToken / OKX）')
 }
 
 export async function waitForTronTransaction(

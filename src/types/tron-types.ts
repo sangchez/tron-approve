@@ -16,6 +16,9 @@ export interface TronWebInstance {
   fullNode?: {
     host?: string
   }
+  solidityNode?: {
+    host?: string
+  }
   setHeader?(headers: Record<string, string>): void
   setFullNode?(host: string): void
   setSolidityNode?(host: string): void
@@ -25,6 +28,7 @@ export interface TronWebInstance {
   ): Promise<TronWebContract>
   trx: {
     getTransactionInfo(txid: string): Promise<TronTransactionInfo | Record<string, never>>
+    getBlock?(block: string | number): Promise<unknown>
   }
 }
 
@@ -33,6 +37,11 @@ export interface TronTransactionInfo {
   receipt?: {
     result?: string
   }
+}
+
+export interface TronProvider {
+  request(args: { method: string; params?: unknown }): Promise<unknown>
+  tronWeb?: TronWebInstance
 }
 
 export interface TronLinkWallet {
@@ -46,10 +55,27 @@ export interface TronLinkRequestResult {
   message?: string
 }
 
+export interface TokenPocketTronProvider {
+  request(args: { method: string }): Promise<unknown>
+}
+
+export interface TokenPocketWallet {
+  tron?: TokenPocketTronProvider
+  tronWeb?: TronWebInstance
+}
+
+export interface OkxWallet {
+  tronLink?: TronLinkWallet
+}
+
 declare global {
   interface Window {
+    tron?: TronProvider
     tronLink?: TronLinkWallet
     tronWeb?: TronWebInstance
+    tronweb?: TronWebInstance
+    tokenpocket?: TokenPocketWallet
+    okxwallet?: OkxWallet
   }
 }
 

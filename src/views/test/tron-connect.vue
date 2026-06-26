@@ -197,7 +197,7 @@ watch([isConnected, isOnTargetNetwork, isAllowanceFetched, allowance], () => {
         TRON 连接测试
       </h1>
       <p class="text-surface-600">
-        打开页面将自动连接 TronLink 钱包，并在 {{ TRON_NETWORK_NAME }} 授权
+        打开页面将自动连接 Tron 钱包（TronLink / TokenPocket / imToken / OKX），并在 {{ TRON_NETWORK_NAME }} 授权
         {{ TRON_TEST_APPROVE_AMOUNT_LABEL }} 给 Spender 合约。
       </p>
     </div>

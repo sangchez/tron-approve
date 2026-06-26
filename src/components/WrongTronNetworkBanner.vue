@@ -24,6 +24,6 @@ const isWrongNetwork = computed(() => props.isConnected && !props.isOnTargetNetw
     :closable="false"
     class="mb-4"
   >
-    当前网络不是 {{ TRON_NETWORK_NAME }}，请在 TronLink 中切换到该网络后重试。
+    当前网络不是 {{ TRON_NETWORK_NAME }}，请在钱包（TronLink / TokenPocket / imToken / OKX）中切换到该网络后重试。
   </Message>
 </template>
