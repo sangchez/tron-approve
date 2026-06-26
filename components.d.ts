@@ -23,6 +23,7 @@ declare module 'vue' {
     DarkMode: typeof import('./src/components/DarkMode.vue')['default']
     Divider: typeof import('primevue/divider')['default']
     InputNumber: typeof import('primevue/inputnumber')['default']
+    InputText: typeof import('primevue/inputtext')['default']
     Languages: typeof import('./src/components/Languages.vue')['default']
     Menubar: typeof import('primevue/menubar')['default']
     Message: typeof import('primevue/message')['default']

@@ -10,6 +10,9 @@ export function mapTronErrorMessage(error: unknown): string {
     if (msg.includes('tronlink') && msg.includes('not found')) {
       return '未检测到 TronLink 钱包，请先安装并启用'
     }
+    if (msg.includes('429') || msg.includes('too many requests')) {
+      return 'TronGrid 请求过于频繁（429），请稍后点击「重新授权」重试'
+    }
     if (msg.includes('cors') || msg.includes('failed to fetch') || msg.includes('network error')) {
       return 'TronGrid 请求失败（CORS/网络错误），请配置 VITE_TRONGRID_API_KEY 并重启 dev 服务'
     }

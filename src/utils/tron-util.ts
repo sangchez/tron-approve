@@ -162,9 +162,19 @@ export async function isTronTargetNetworkAsync(tronWeb?: TronWebInstance): Promi
   return true
 }
 
+/** 是否应覆盖钱包自带 RPC（仅本地代理或已配置 TronGrid API Key 时） */
+export function shouldUseCustomRpc(): boolean {
+  return Boolean((import.meta.env.DEV && TRON_RPC_PROXY) || TRONGRID_API_KEY)
+}
+
 /** 将 TronWeb RPC 指向同源代理并附加 TronGrid API Key */
 export function configureTronWebRpc(tronWeb?: TronWebInstance): void {
   if (!tronWeb) return
+
+  // 生产环境未配置 API Key 时保留钱包自带节点（imToken/OKX 等），避免 TronGrid 429
+  if (!shouldUseCustomRpc()) {
+    return
+  }
 
   const rpcBaseUrl = getTronRpcBaseUrl()
 
@@ -179,6 +189,35 @@ export function configureTronWebRpc(tronWeb?: TronWebInstance): void {
   if (TRONGRID_API_KEY && typeof tronWeb.setHeader === 'function') {
     tronWeb.setHeader({ 'TRON-PRO-API-KEY': TRONGRID_API_KEY })
   }
+}
+
+export function isTronRateLimitError(error: unknown): boolean {
+  const message = error instanceof Error
+    ? error.message
+    : (error && typeof error === 'object' && 'message' in error ? String(error.message) : String(error))
+  return message.includes('429') || message.toLowerCase().includes('too many requests')
+}
+
+export async function withTronRpcRetry<T>(
+  task: () => Promise<T>,
+  retries = 3,
+  baseDelayMs = 1500,
+): Promise<T> {
+  let lastError: unknown
+
+  for (let attempt = 0; attempt < retries; attempt++) {
+    try {
+      return await task()
+    } catch (error) {
+      lastError = error
+      if (!isTronRateLimitError(error) || attempt === retries - 1) {
+        throw error
+      }
+      await new Promise((resolve) => window.setTimeout(resolve, baseDelayMs * (attempt + 1)))
+    }
+  }
+
+  throw lastError
 }
 
 export function normalizeTronUint(value: unknown): bigint {
