@@ -1,0 +1,124 @@
+{
+  "common": {
+    "button": {
+      "confirm": "Confirm",
+      "cancel": "Cancel",
+      "search": "Query Now",
+      "export": "Export Data"
+    },
+    "tips": {
+      "loading": "Loading...",
+      "delete-confirm": "Are you sure to delete all current query records? Deletion cannot be undone.",
+      "no-data": "No query data available, please perform a query operation first",
+      "error": "Operation Failed",
+      "warn": "Operation Reminder",
+      "success": "Operation Successful"
+    },
+    "title": {
+      "home": "Home"
+    },
+    "status": {
+      "unregistered": "Unregistered"
+    }
+  },
+  "route": {
+    "home": "Home",
+    "state-acceptance": "State Acceptance"
+  },
+  "views": {
+    "state-acceptance": {
+      "title": "Page Four-State Acceptance",
+      "subtitle": "Switch states or simulate loading to verify BaseStateContainer behavior",
+      "current": "Current state",
+      "preview": "Preview area",
+      "checklist-title": "Acceptance checklist",
+      "load-delay": "Simulated load delay",
+      "error-description": "Simulated request failure. Click retry to recover.",
+      "normal-title": "Normal state content",
+      "normal-desc": "Business content rendered in the default slot.",
+      "custom-empty": "Custom empty slot content",
+      "custom-error": "Custom error slot content",
+      "retry": "Reload",
+      "slot-toggle": "Slot overrides (custom loading / empty / error)",
+      "states": {
+        "loading": "Loading",
+        "normal": "Normal",
+        "empty": "Empty",
+        "error": "Error"
+      },
+      "actions": {
+        "simulate-load": "Simulate load → Normal",
+        "simulate-empty": "Simulate load → Empty",
+        "simulate-error": "Simulate load → Error"
+      },
+      "slots": {
+        "loading": "Custom loading",
+        "empty": "Custom empty",
+        "error": "Custom error"
+      },
+      "checklist": {
+        "loading": "Loading: ProgressSpinner or #loading slot",
+        "normal": "Normal: default slot business content",
+        "empty": "Empty: no-data message or #empty slot",
+        "error": "Error: message with retry button",
+        "retry": "Retry: enters loading with duplicate guard"
+      }
+    },
+    "home": {
+      "title": "Welcome",
+      "desc": "Decentralized Domain Service"
+    },
+    "ens-manage": {
+      "title": "ENS Domain Batch Query Tool",
+      "desc": "Lightweight ENS domain batch query tool that supports inputting multiple ENS domain names, one-click query of domain holding addresses, reverse resolution information and expiration time. Query results can be exported as CSV files, which is efficient and convenient.",
+      "search": "Search Domain",
+      "batch-query": "Batch Query"
+    }
+  },
+  "components": {
+    "searchForm": {
+      "title": "ENS Domain Batch Query Tool",
+      "description": "Lightweight ENS domain batch query tool that supports inputting multiple ENS domain names, one-click query of domain holding addresses, reverse resolution information and expiration time. Query results can be exported as CSV files, which is efficient and convenient.",
+      "rpc-placeholder": "Please enter Ethereum RPC URL",
+      "domain-placeholder": "Please enter ENS domain name (multiple entries allowed, one per line)",
+      "search-button": "Query Now"
+    },
+    "dataToolbar": {
+      "export": "Export Data",
+      "confirm": "Are you sure to delete all current query records? Deletion cannot be undone.",
+      "accept": "Confirm Deletion",
+      "reject": "Cancel Operation"
+    },
+    "ensDataTable": {
+      "domain": "ENS Domain",
+      "owner": "Holding Address",
+      "expiry": "Expiration Time",
+      "empty": "No query data available, please perform a query operation first",
+      "unregister": "Unregistered"
+    },
+    "wallet-modal": {
+      "title": "Connect Wallet",
+      "tip": "Please connect your wallet first"
+    }
+  },
+  "validation": {
+    "required": "This field is required",
+    "invalid-domain": "Invalid domain format",
+    "required-rpc": "Please enter a valid Ethereum RPC URL",
+    "invalid-rpc": "The Ethereum RPC URL format is incorrect. Please check and re-enter",
+    "required-domain": "Please enter valid ENS domain names (multiple entries allowed, one per line)",
+    "invalid-address": "Invalid contract address format or non-existent address",
+    "network": "Current chain is not supported, please switch to a compatible chain"
+  },
+  "errors": {
+    "common": {
+      "system-error": "System error, please try again later",
+      "rpc": "RPC node connection failed or invalid address",
+      "ethereum": "No Ethereum wallet plugin detected in your browser",
+      "method": "The specified function method was not found in this contract",
+      "user-rejected": "You cancelled the signature",
+      "insufficient-funds": "Insufficient balance for gas or transaction amount",
+      "unknown": "Unknown error occurred"
+    }
+  }
+}

@@ -1,0 +1,13 @@
+/* You can add global styles to this file, and also import other style files */
+@use 'primeicons/primeicons.css';
+@use '@/assets/styles/layout/layout.scss';
+@use '@/assets/styles/demo/demo.scss';
+
+body {
+  font-family: 'Inter', sans-serif;
+}
+
+.main {
+  max-width: 1200px;
+  min-height: 400px;
+}

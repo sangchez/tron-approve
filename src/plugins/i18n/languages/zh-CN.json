@@ -1,0 +1,121 @@
+{
+  "common": {
+    "button": {
+      "confirm": "确认",
+      "cancel": "取消",
+      "search": "查询",
+      "export": "导出数据"
+    },
+    "tips": {
+      "loading": "加载中...",
+      "delete-confirm": "确认删除当前所有查询记录吗？删除后不可恢复。",
+      "no-data": "暂无查询数据，请先执行查询操作",
+      "error": "操作失败",
+      "warn": "操作提醒",
+      "success": "操作成功"
+    },
+    "title": {
+      "home": "首页"
+    },
+    "status": {
+      "unregistered": "未注册"
+    }
+  },
+  "route": {
+    "home": "首页",
+    "state-acceptance": "四态验收"
+  },
+  "views": {
+    "state-acceptance": {
+      "title": "页面四态验收",
+      "subtitle": "切换状态或模拟加载，验证 BaseStateContainer 四种状态与重试逻辑",
+      "current": "当前状态",
+      "preview": "四态预览区",
+      "checklist-title": "验收清单",
+      "load-delay": "模拟加载耗时",
+      "error-description": "模拟请求失败，请点击重试",
+      "normal-title": "正常态业务内容",
+      "normal-desc": "此处为 #default 插槽渲染的业务区域。",
+      "custom-empty": "自定义空态插槽内容",
+      "custom-error": "自定义错误态插槽内容",
+      "retry": "重新加载",
+      "slot-toggle": "插槽覆盖（验收自定义 loading / empty / error）",
+      "states": {
+        "loading": "加载中",
+        "normal": "正常",
+        "empty": "空数据",
+        "error": "异常"
+      },
+      "actions": {
+        "simulate-load": "模拟加载 → 正常",
+        "simulate-empty": "模拟加载 → 空态",
+        "simulate-error": "模拟加载 → 异常"
+      },
+      "slots": {
+        "loading": "自定义 loading",
+        "empty": "自定义 empty",
+        "error": "自定义 error"
+      },
+      "checklist": {
+        "loading": "加载态：展示 ProgressSpinner 或 #loading 插槽",
+        "normal": "正常态：展示默认插槽业务内容",
+        "empty": "空态：展示暂无数据或 #empty 插槽",
+        "error": "异常态：展示错误提示与重试按钮",
+        "retry": "重试：点击后进入 loading 并防重复提交"
+      }
+    },
+    "home": {
+      "title": "欢迎",
+      "desc": "去中心化域名服务"
+    },
+    "ens-manage": {
+      "title": "ENS 域名批量查询工具",
+      "desc": "轻量级 ENS 域名批量查询工具，支持输入多个 ENS 域名，一键查询域名持有地址、反向解析信息及过期时间，查询结果可导出为 CSV 文件，高效便捷。",
+      "search": "搜索域名",
+      "batch-query": "批量查询"
+    }
+  },
+  "components": {
+    "searchForm": {
+      "title": "ENS 域名批量查询工具",
+      "description": "轻量级 ENS 域名批量查询工具，支持输入多个 ENS 域名，一键查询域名持有地址、反向解析信息及过期时间，查询结果可导出为 CSV 文件，高效便捷。",
+      "rpc-placeholder": "请输入以太坊 RPC 地址",
+      "domain-placeholder": "请输入 ENS 域名（可输入多个，每行一个）",
+      "search-button": "查询"
+    },
+    "dataToolbar": {
+      "export": "导出数据",
+      "confirm": "确认删除当前所有查询记录吗？删除后不可恢复。",
+      "accept": "确认删除",
+      "reject": "取消操作"
+    },
+    "ensDataTable": {
+      "domain": "ENS 域名",
+      "owner": "持有地址",
+      "expiry": "过期时间",
+      "empty": "暂无查询数据，请先执行查询操作",
+      "unregister": "未注册"
+    },
+    "wallet-modal": {
+      "title": "连接钱包",
+      "tip": "请先连接您的钱包"
+    }
+  },
+  "validation": {
+    "required": "此字段为必填项",
+    "invalid-domain": "无效的域名格式",
+    "required-rpc": "请输入有效的以太坊 RPC 地址",
+    "invalid-rpc": "以太坊 RPC 地址格式不正确，请检查后重新输入",
+    "required-domain": "请输入有效的 ENS 域名（可输入多个，每行一个）",
+    "invalid-address": "合约地址格式无效或不存在",
+    "network": "当前网络链暂不支持，请切换至兼容链"
+  },
+  "errors": {
+    "common": {
+      "system-error": "系统错误，请稍后再试",
+      "rpc": "RPC 节点连接失败或地址无效",
+      "ethereum": "检测到您的浏览器未安装以太坊钱包插件",
+      "method": "该合约中未找到指定的函数方法"
+    }
+  }
+}

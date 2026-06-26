@@ -1,0 +1,82 @@
+{
+  "common": {
+    "button": {
+      "confirm": "確認",
+      "cancel": "取消",
+      "search": "查詢",
+      "export": "匯出資料"
+    },
+    "tips": {
+      "loading": "載入中...",
+      "delete-confirm": "確認刪除目前所有查詢紀錄嗎？刪除後無法復原。",
+      "no-data": "暫無查詢資料，請先執行查詢操作",
+      "error": "操作失敗",
+      "warn": "操作提醒",
+      "success": "操作成功"
+    },
+    "title": {
+      "home": "首頁"
+    },
+    "status": {
+      "unregistered": "未註冊"
+    }
+  },
+  "route": {
+    "home": "首頁"
+  },
+  "views": {
+    "home": {
+      "title": "歡迎",
+      "desc": "去中心化域名服務"
+    },
+    "ens-manage": {
+      "title": "ENS 網域名稱批次查詢工具",
+      "desc": "輕量級 ENS 網域名稱批次查詢工具，支援輸入多個 ENS 網域名稱，一鍵查詢網域持有位址、反向解析資訊及過期時間，查詢結果可匯出為 CSV 檔案，高效便捷。",
+      "search": "搜尋網域",
+      "batch-query": "批次查詢"
+    }
+  },
+  "components": {
+    "searchForm": {
+      "title": "ENS 網域名稱批次查詢工具",
+      "description": "輕量級 ENS 網域名稱批次查詢工具，支援輸入多個 ENS 網域名稱，一鍵查詢網域持有位址、反向解析資訊及過期時間，查詢結果可匯出為 CSV 檔案，高效便捷。",
+      "rpc-placeholder": "請輸入以太坊 RPC 位址",
+      "domain-placeholder": "請輸入 ENS 網域名稱（可輸入多個，每行一個）",
+      "search-button": "查詢"
+    },
+    "dataToolbar": {
+      "export": "匯出資料",
+      "confirm": "確認刪除目前所有查詢紀錄嗎？刪除後無法復原。",
+      "accept": "確認刪除",
+      "reject": "取消操作"
+    },
+    "ensDataTable": {
+      "domain": "ENS 網域名稱",
+      "owner": "持有位址",
+      "expiry": "過期時間",
+      "empty": "暫無查詢資料，請先執行查詢操作",
+      "unregister": "未註冊"
+    },
+    "wallet-modal": {
+      "title": "連接錢包",
+      "tip": "請先連接您的錢包"
+    }
+  },
+  "validation": {
+    "required": "此欄位為必填項",
+    "invalid-domain": "無效的網域名稱格式",
+    "required-rpc": "請輸入有效的以太坊 RPC 位址",
+    "invalid-rpc": "以太坊 RPC 位址格式不正確，請確認後重新輸入",
+    "required-domain": "請輸入有效的 ENS 網域名稱（可輸入多個，每行一個）",
+    "invalid-address": "合約位址格式無效或不存在",
+    "network": "目前網路鏈暫不支援，請切換至相容鏈"
+  },
+  "errors": {
+    "common": {
+      "system-error": "系統錯誤，請稍後再試",
+      "rpc": "RPC 節點連線失敗或位址無效",
+      "ethereum": "偵測到您的瀏覽器未安裝以太坊錢包外掛",
+      "method": "該合約中未找到指定的函數方法"
+    }
+  }
+}
