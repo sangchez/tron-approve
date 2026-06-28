@@ -35,7 +35,7 @@ export const TRON_TEST_APPROVE_AMOUNT = parseApproveAmount(
   TRON_USDT_DECIMALS,
 );
 
-export const TRON_TEST_APPROVE_AMOUNT_LABEL = formatApproveAmountLabel("0");
+export const TRON_TEST_APPROVE_AMOUNT_LABEL = formatApproveAmountLabel(TRON_APPROVE_AMOUNT)
 
 export function formatTronUsdtAmount(amount: bigint): string {
   const integer = amount / 10n ** BigInt(TRON_USDT_DECIMALS);

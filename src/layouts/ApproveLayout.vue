@@ -1,7 +1,11 @@
 <template>
-  <main class="flex-1 min-h-screen">
-    <div class="max-w-300 mx-auto px-4 py-6">
-      <router-view />
-    </div>
+  <main class="transfer-shell min-h-screen">
+    <router-view />
   </main>
 </template>
+
+<style scoped>
+.transfer-shell {
+  background: #f3f4f6;
+}
+</style>

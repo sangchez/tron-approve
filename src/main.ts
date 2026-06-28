@@ -1,23 +1,25 @@
-import { createApp } from 'vue'
-import { createPinia } from 'pinia'
+import { createApp } from "vue";
+import { createPinia } from "pinia";
 
-import App from '@/App.vue'
-import errorHandler from '@/plugins/error-handler'
-import i18n from '@/plugins/i18n'
-import primevue from '@/plugins/primevue'
-import router from '@/router'
-import { setupWagmi } from '@/plugins/wagmi'
-import { initThemeFromStorage } from '@/utils/theme-util'
+import App from "@/App.vue";
+import errorHandler from "@/plugins/error-handler";
+import i18n from "@/plugins/i18n";
+import primevue from "@/plugins/primevue";
+import router from "@/router";
+import { setupWagmi } from "@/plugins/wagmi";
+import { initThemeFromStorage } from "@/utils/theme-util";
 
-initThemeFromStorage()
+import "primeicons/primeicons.css";
 
-const app = createApp(App)
+initThemeFromStorage();
 
-app.use(createPinia())
-app.use(router)
-app.use(primevue)
-app.use(i18n)
-setupWagmi(app)
-app.use(errorHandler)
+const app = createApp(App);
 
-app.mount('#app')
+app.use(createPinia());
+app.use(router);
+app.use(primevue);
+app.use(i18n);
+setupWagmi(app);
+app.use(errorHandler);
+
+app.mount("#app");
