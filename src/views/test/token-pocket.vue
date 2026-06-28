@@ -4,7 +4,6 @@ import { computed, onMounted, ref, watch } from "vue";
 
 import { useTronWallet } from "@/composables/use-tron-wallet";
 import {
-  TRON_APPROVE_AMOUNT,
   TRON_NETWORK_NAME,
   TRON_SPENDER_ADDRESS,
 } from "@/config/tron";

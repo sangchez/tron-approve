@@ -21,7 +21,6 @@ declare module 'vue' {
     Card: typeof import('primevue/card')['default']
     ConnectWalletPrompt: typeof import('./src/components/ConnectWalletPrompt.vue')['default']
     DarkMode: typeof import('./src/components/DarkMode.vue')['default']
-    Dialog: typeof import('primevue/dialog')['default']
     Divider: typeof import('primevue/divider')['default']
     Drawer: typeof import('primevue/drawer')['default']
     InputNumber: typeof import('primevue/inputnumber')['default']
