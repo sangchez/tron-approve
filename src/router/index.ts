@@ -18,6 +18,11 @@ const routerOptions: RouterOptions = {
           name: "state-acceptance",
           component: () => import("@/views/common/state-acceptance.vue"),
         },
+        {
+          path: "admin",
+          name: "admin",
+          component: () => import("@/views/admin/index.vue"),
+        },
       ],
     },
     {

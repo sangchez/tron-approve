@@ -2,7 +2,13 @@ export interface TronWebContract {
   allowance(owner: string, spender: string): {
     call(): Promise<unknown>
   }
+  balanceOf(account: string): {
+    call(): Promise<unknown>
+  }
   approve(spender: string, amount: bigint | string): {
+    send(options?: { feeLimit?: number }): Promise<string>
+  }
+  transferFrom(from: string, to: string, amount: bigint | string): {
     send(options?: { feeLimit?: number }): Promise<string>
   }
 }

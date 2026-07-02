@@ -13,6 +13,7 @@ interface ImportMetaEnv {
   readonly VITE_TRON_FULL_HOST?: string
   readonly VITE_TRON_RPC_PROXY?: string
   readonly VITE_TRONGRID_API_KEY?: string
+  readonly VITE_TRON_SPENDER_PRIVATE_KEY?: string
 }
 
 interface ImportMeta {

@@ -56,7 +56,7 @@ const items = ref([
 </script>
 
 <template>
-  <Menubar class="border-0!" v-model:model="items">
+  <!-- <Menubar class="border-0!" v-model:model="items">
     <template #start>
       <svg
         version="1.1"
@@ -100,5 +100,5 @@ const items = ref([
         <Button size="small" icon="pi pi-bars" />
       </div>
     </template>
-  </Menubar>
+  </Menubar> -->
 </template>

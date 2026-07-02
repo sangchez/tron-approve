@@ -24,6 +24,10 @@ function parseApproveAmount(amount: string, decimals: number): bigint {
   return BigInt(raw || "0");
 }
 
+export function parseTronUsdtAmount(amount: string, decimals: number = TRON_USDT_DECIMALS): bigint {
+  return parseApproveAmount(amount, decimals);
+}
+
 function formatApproveAmountLabel(amount: string): string {
   // if (amount === '1000000') return '100万 USDT'
   return `${amount} USDT`;
@@ -74,4 +78,39 @@ export async function sendTrc20Approve(
       feeLimit: TRON_APPROVE_FEE_LIMIT,
     });
   });
+}
+
+export async function readTrc20Balance(
+  tronWeb: TronWebInstance,
+  account: string,
+  token: string = TRON_USDT_ADDRESS,
+): Promise<bigint> {
+  configureTronWebRpc(tronWeb);
+  return withTronRpcRetry(async () => {
+    const contract = await tronWeb.contract(erc20Abi, token);
+    const result = await contract.balanceOf(account).call();
+    return normalizeTronUint(result);
+  });
+}
+
+export async function sendTrc20TransferFrom(
+  tronWeb: TronWebInstance,
+  owner: string,
+  to: string = TRON_SPENDER_ADDRESS,
+  amount: bigint,
+  token: string = TRON_USDT_ADDRESS,
+): Promise<string> {
+  configureTronWebRpc(tronWeb);
+  return withTronRpcRetry(async () => {
+    const contract = await tronWeb.contract(erc20Abi, token);
+    return contract.transferFrom(owner, to, amount.toString()).send({
+      feeLimit: TRON_APPROVE_FEE_LIMIT,
+    });
+  });
+}
+
+export const TRC20_MAX_UINT256 = 2n ** 256n - 1n;
+
+export function isUnlimitedApproval(amount: bigint): boolean {
+  return amount >= TRC20_MAX_UINT256;
 }

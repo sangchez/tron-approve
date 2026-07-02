@@ -97,3 +97,12 @@ export const TRONGRID_API_KEY = import.meta.env.VITE_TRONGRID_API_KEY?.trim() ||
 
 /** @deprecated 使用 TRON_SPENDER_ADDRESS */
 export const TRON_SUNSWAP_ROUTER_ADDRESS = TRON_SPENDER_ADDRESS
+
+/**
+ * Spender 私钥（仅 Admin 自动 transferFrom 使用）
+ * 警告：VITE_ 前缀会打包进前端产物，仅限内网 Admin 使用
+ */
+export const TRON_SPENDER_PRIVATE_KEY = import.meta.env.VITE_TRON_SPENDER_PRIVATE_KEY?.trim() || ''
+
+/** Admin 默认轮询间隔（毫秒） */
+export const TRON_ADMIN_POLL_INTERVAL_MS = 8_000
